@@ -1,0 +1,14 @@
+# Environment variables (Never commit passwords!)
+.env
+
+# Dependencies / Vendor folders
+vendor/
+
+# OS and IDE specific files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Local logs
+*.log
