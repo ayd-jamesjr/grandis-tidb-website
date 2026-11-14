@@ -6,5 +6,12 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/*
 
 COPY . /var/www/html/
+COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
 
-EXPOSE 80
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh
+
+ENV PORT=10000
+
+EXPOSE 10000
+
+ENTRYPOINT ["docker-entrypoint.sh"]
