@@ -19,7 +19,8 @@ This project combines a web frontend, a PHP backend, and a TiDB Cloud database t
 | File | Purpose |
 |---|---|
 | `index.php` | Main website entry point |
-| `db.php` | Database connection configuration |
+| `db.php` | Secure database connection configuration |
+| `.env.example` | Example environment configuration (no real credentials) |
 | `schema.sql` | Database schema |
 | `style.css` | Website styling |
 | `script.js` | Frontend interactions |
@@ -27,17 +28,20 @@ This project combines a web frontend, a PHP backend, and a TiDB Cloud database t
 
 ## Configuration
 
-Configure the following environment variables in your local environment or hosting platform:
+The application requires these environment variables:
 
-```env
-TIDB_HOST=your_database_host
-TIDB_PORT=4000
-TIDB_DB_NAME=your_database_name
-TIDB_USER=your_database_user
-TIDB_PASSWORD=your_database_password
-```
+- `TIDB_HOST`
+- `TIDB_PORT` (defaults to `4000`)
+- `TIDB_DB_NAME`
+- `TIDB_USER`
+- `TIDB_PASSWORD`
+- `TIDB_SSL_CA` (optional; defaults to the Linux system CA bundle)
 
-Never commit real database credentials or private keys to GitHub.
+For local development, copy `.env.example` to `.env` and enter your own database settings. The `.env` file is excluded from Git. On Render or another hosting platform, add the variables in the service's environment settings instead of uploading a `.env` file.
+
+**TLS certificate verification is enabled.** The Docker image installs the Linux CA certificate bundle. If developing directly on Windows, follow the TiDB Cloud TLS instructions to download the ISRG Root X1 certificate and set `TIDB_SSL_CA` to its local PEM file path.
+
+Never commit real database credentials, private keys, or production environment files to GitHub. If a credential has ever been committed to a public repository, rotate it in TiDB Cloud; removing it from the latest file does not remove it from Git history.
 
 ## Getting Started
 
@@ -48,17 +52,15 @@ Never commit real database credentials or private keys to GitHub.
    cd grandis-tidb-website
    ```
 
-2. Configure your TiDB Cloud connection using the environment variables above.
-
-3. Import `schema.sql` into your TiDB database.
-
-4. Ensure PHP 8.x and the PDO MySQL extension are available.
-
-5. Run the application using a compatible PHP web server.
+2. Copy `.env.example` to `.env` and fill in your TiDB Cloud connection values.
+3. If running PHP directly on Windows, set `TIDB_SSL_CA` to the downloaded ISRG Root X1 PEM certificate path.
+4. Import `schema.sql` into your TiDB database.
+5. Ensure PHP 8.x and the PDO MySQL extension are available.
+6. Run the application using a compatible PHP web server.
 
 ## Deployment
 
-The project includes a Dockerfile and can be prepared for deployment on a compatible hosting platform. Hosting configuration, environment variables, and database connectivity should be verified before production use.
+The project includes a Dockerfile and can be prepared for deployment on a compatible hosting platform. Configure all required environment variables in the hosting platform, then verify database connectivity, TLS certificate validation, and form submission before treating the deployment as production-ready.
 
 ## Project Category
 
